@@ -1,0 +1,94 @@
+{
+  "name": "Builder.io MCP Integration",
+  "description": "Integration with Builder.io for content management and type generation",
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": "builder_get_models",
+      "description": "Get all Builder.io models with their schemas",
+      "endpoint": "http://localhost:3000/models",
+      "method": "GET",
+      "headers": {
+        "X-API-Key": "${BUILDER_API_KEY}"
+      }
+    },
+    {
+      "name": "builder_create_model",
+      "description": "Create a new Builder.io model",
+      "endpoint": "http://localhost:3000/models",
+      "method": "POST",
+      "headers": {
+        "X-API-Key": "${BUILDER_API_KEY}",
+        "Content-Type": "application/json"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "kind": {"type": "string", "enum": ["page", "data", "component"]},
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string"},
+                "type": {"type": "string"},
+                "required": {"type": "boolean"}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "builder_get_content",
+      "description": "Get content entries for a specific model",
+      "endpoint": "http://localhost:3000/content/{model}",
+      "method": "GET",
+      "headers": {
+        "X-API-Key": "${BUILDER_API_KEY}"
+      }
+    },
+    {
+      "name": "builder_create_content",
+      "description": "Create new content entry in Builder.io",
+      "endpoint": "http://localhost:3000/content/{model}",
+      "method": "POST",
+      "headers": {
+        "X-API-Key": "${BUILDER_API_KEY}",
+        "Content-Type": "application/json"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "data": {"type": "object"},
+          "published": {"type": "string", "enum": ["draft", "published"]}
+        }
+      }
+    },
+    {
+      "name": "builder_generate_types",
+      "description": "Generate TypeScript interfaces from Builder.io models",
+      "endpoint": "http://localhost:3000/generate-types",
+      "method": "GET",
+      "headers": {
+        "X-API-Key": "${BUILDER_API_KEY}"
+      }
+    },
+    {
+      "name": "builder_get_context",
+      "description": "Get comprehensive context about Builder.io models, content, and frontend integration",
+      "endpoint": "http://localhost:3000/augment-context",
+      "method": "GET"
+    }
+  ],
+  "context_providers": [
+    {
+      "name": "builder_context",
+      "description": "Provides comprehensive context about Builder.io models, content, and frontend files",
+      "endpoint": "http://localhost:3000/augment-context",
+      "refresh_interval": 300
+    }
+  ]
+}
