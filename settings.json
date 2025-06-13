@@ -1,0 +1,10 @@
+{
+  "augment.advanced.mcpServers": [
+    {
+      "name": "builder-mcp",
+      "command": "node",
+      "args": ["/Users/justinbeattie/Development/builder-mcp/dist/app.js"],
+      "cwd": "/Users/justinbeattie/Development/builder-mcp"
+    }
+  ]
+}

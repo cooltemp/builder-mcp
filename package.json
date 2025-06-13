@@ -1,0 +1,44 @@
+{
+  "name": "builder-mcp",
+  "version": "1.0.0",
+  "description": "Simple Builder.io MCP for headless CMS integration with Qwik",
+  "main": "dist/app.js",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc && tsc-alias",
+    "start": "node dist/app.js",
+    "type-check": "tsc --noEmit",
+    "generate-types": "tsx src/scripts/generateTypes.ts",
+    "debug-models": "tsx src/scripts/debugModels.ts",
+    "validate-types": "tsx src/scripts/validateTypes.ts",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:models": "vitest run tests/models.test.ts",
+    "test:content": "vitest run tests/content.test.ts",
+    "test:upload": "vitest run tests/upload.test.ts",
+    "test:types": "vitest run tests/types.test.ts",
+    "test:all": "vitest run tests/"
+  },
+  "keywords": ["builder.io", "mcp", "cms", "qwik", "typescript"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "form-data": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.4",
+    "@types/cors": "^2.8.17",
+    "@types/multer": "^1.4.11",
+    "typescript": "^5.3.3",
+    "tsx": "^4.6.2",
+    "vitest": "^1.0.4",
+    "@vitest/ui": "^1.0.4"
+  }
+}
