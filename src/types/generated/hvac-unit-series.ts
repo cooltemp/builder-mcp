@@ -1,5 +1,5 @@
 // Auto-generated TypeScript interfaces for hvac-unit-series content
-// Generated on: 2025-06-14T03:01:47.974Z
+// Generated on: 2025-06-14T23:22:51.987Z
 
 import type { BuilderReference } from '@/types';
 import type { IHVACBrandContent, IHVACServicingContent } from '@/types/generated';

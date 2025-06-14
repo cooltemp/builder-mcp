@@ -1,10 +1,10 @@
-// Auto-generated TypeScript interfaces for mcp-server-test-1749868128254 content
-// Generated on: 2025-06-14T03:01:41.039Z
+// Auto-generated TypeScript interfaces for mcp-server-test-1749943322437 content
+// Generated on: 2025-06-14T23:22:47.296Z
 
 import type { BuilderReference } from '@/types';
 
 // Content entry structure (full response from Content API)
-export interface IMcpServerTest1749868128254Content {
+export interface IMcpServerTest1749943322437Content {
   id: string;
   name: string;
   published: 'published' | 'draft' | 'archived';
@@ -12,10 +12,10 @@ export interface IMcpServerTest1749868128254Content {
   lastUpdated?: number;
   modelId: string;
   rev?: string;
-  data: IMcpServerTest1749868128254Data;
+  data: IMcpServerTest1749943322437Data;
 }
 
 // Data structure (nested under 'data' property in content)
-export interface IMcpServerTest1749868128254Data {
+export interface IMcpServerTest1749943322437Data {
   title: string;
 }

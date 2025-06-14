@@ -1,5 +1,5 @@
 // Auto-generated TypeScript interfaces for hvac-use-case content
-// Generated on: 2025-06-14T03:01:41.040Z
+// Generated on: 2025-06-14T23:22:47.292Z
 
 import type { BuilderReference } from '@/types';
 
