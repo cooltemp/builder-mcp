@@ -25,7 +25,10 @@ export function createBuilderResources(config: BuilderConfig): McpResource[] {
       handler: async () => {
         Logger.info('Fetching models resource');
         const result = await adminService.getModels();
-        return result;
+        if (result.success && result.data) {
+          return result.data; // Return the data directly (contains models array)
+        }
+        return { models: [] }; // Fallback with empty models array
       },
     },
 
@@ -87,7 +90,7 @@ export function createBuilderResources(config: BuilderConfig): McpResource[] {
           capabilities: {
             tools: [
               'list_models',
-              'get_model_ids', 
+              'get_model_ids',
               'get_model',
               'create_model',
               'update_model',
@@ -103,6 +106,7 @@ export function createBuilderResources(config: BuilderConfig): McpResource[] {
               'delete_file',
               'generate_types',
               'generate_types_for_model',
+              'validate_model_types',
             ],
             resources: [
               'builder://models',

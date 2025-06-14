@@ -161,23 +161,67 @@ export function createBuilderTools(config: BuilderConfig): McpTool[] {
             type: 'string',
             description: 'Model description',
           },
+          kind: {
+            type: 'string',
+            description: 'Model kind (e.g., "data")',
+          },
         },
         required: ['name'],
         additionalProperties: true,
       },
       handler: async (args: any) => {
-        validateRequired(args.name, 'Model name');
-        validateModelName(args.name);
-        Logger.info(`Creating model: ${args.name}`);
-        const result = await adminService.createModel(args);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(result, null, 2),
-            },
-          ],
-        };
+        try {
+          validateRequired(args.name, 'Model name');
+          validateModelName(args.name);
+
+          // Set default kind if not provided
+          if (!args.kind) {
+            args.kind = 'data';
+          }
+
+          Logger.mcpDebug('create_model_input', args);
+          Logger.info(`Creating model: ${args.name}`);
+
+          const result = await adminService.createModel(args);
+
+          Logger.mcpDebug('create_model_result', result);
+
+          if (!result.success) {
+            Logger.error(`Model creation failed for ${args.name}`, {
+              error: result.error,
+              status: result.status,
+              input: args
+            });
+          }
+
+          return {
+            content: [
+              {
+                type: 'text',
+                text: JSON.stringify(result, null, 2),
+              },
+            ],
+          };
+        } catch (error: any) {
+          Logger.error('Error in create_model handler', {
+            error: error.message,
+            stack: error.stack,
+            input: args
+          });
+
+          return {
+            content: [
+              {
+                type: 'text',
+                text: JSON.stringify({
+                  success: false,
+                  error: error.message,
+                  status: 500
+                }, null, 2),
+              },
+            ],
+          };
+        }
       },
     },
 
@@ -667,8 +711,12 @@ export function createBuilderTools(config: BuilderConfig): McpTool[] {
             {
               type: 'text',
               text: JSON.stringify({
-                message: 'TypeScript interfaces generated and written to files',
-                results
+                success: true,
+                data: {
+                  message: 'TypeScript interfaces generated and written to files',
+                  results
+                },
+                status: 200
               }, null, 2),
             },
           ],
@@ -694,7 +742,7 @@ export function createBuilderTools(config: BuilderConfig): McpTool[] {
         validateRequired(args.model, 'Model name');
         Logger.info(`Generating TypeScript interface for model: ${args.model}`);
 
-        const modelResult = await adminService.getModel(args.model);
+        const modelResult = await adminService.getModelByName(args.model);
         if (!modelResult.success) {
           throw new Error(modelResult.error);
         }

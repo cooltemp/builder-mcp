@@ -1,5 +1,5 @@
 // Auto-generated TypeScript interfaces for testimonial content
-// Generated on: 2025-06-13T11:01:54.229Z
+// Generated on: 2025-06-14T03:01:41.039Z
 
 import type { BuilderReference } from '@/types';
 

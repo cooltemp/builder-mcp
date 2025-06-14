@@ -38,3 +38,14 @@ export function validateContentData(data: any): void {
     throw new Error('Content data must be an object');
   }
 }
+
+export function validateUrl(url: string): void {
+  validateRequired(url, 'URL');
+  validateString(url, 'URL');
+
+  try {
+    new URL(url);
+  } catch (error) {
+    throw new Error('URL must be a valid URL');
+  }
+}

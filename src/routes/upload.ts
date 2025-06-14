@@ -4,7 +4,7 @@ import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import { BuilderUploadService } from '@/services/builderUpload';
 import { BuilderConfig } from '@/types';
-import { validateRequired } from '@/utils/validation';
+import { validateRequired, validateUrl } from '@/utils/validation';
 import { Logger } from '@/utils/logger';
 
 // Configure multer for file uploads
@@ -42,7 +42,7 @@ export function createUploadRouter(config: BuilderConfig): Router {
   const router = Router();
   const uploadService = new BuilderUploadService(config);
 
-  // POST /upload - Upload file
+  // POST / - Upload file
   router.post('/', upload.single('file'), async (req: Request, res: Response): Promise<void> => {
     try {
       if (!req.file) {
@@ -99,12 +99,12 @@ export function createUploadRouter(config: BuilderConfig): Router {
     }
   });
 
-  // POST /upload/url - Upload from URL
+  // POST /url - Upload from URL
   router.post('/url', async (req: Request, res: Response) => {
     try {
       const { url, filename, folder, metadata } = req.body;
-      
-      validateRequired(url, 'URL');
+
+      validateUrl(url);
       
       const options: any = {};
       if (filename) options.filename = filename;
@@ -134,7 +134,7 @@ export function createUploadRouter(config: BuilderConfig): Router {
     }
   });
 
-  // GET /upload/:id - Get file info
+  // GET /:id - Get file info
   router.get('/:id', async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -163,7 +163,7 @@ export function createUploadRouter(config: BuilderConfig): Router {
     }
   });
 
-  // DELETE /upload/:id - Delete file
+  // DELETE /:id - Delete file
   router.delete('/:id', async (req: Request, res: Response) => {
     try {
       const { id } = req.params;

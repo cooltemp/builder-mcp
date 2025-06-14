@@ -1,5 +1,5 @@
 // Auto-generated TypeScript interfaces for categories content
-// Generated on: 2025-06-13T11:01:54.231Z
+// Generated on: 2025-06-14T03:01:41.045Z
 
 import type { BuilderReference } from '@/types';
 

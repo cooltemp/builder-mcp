@@ -95,13 +95,13 @@ function createApp(): express.Application {
         },
         upload: {
           'POST /upload': 'Upload file',
-          'POST /upload/url': 'Upload from URL',
+          'POST /upload-url': 'Upload from URL',
           'GET /upload/:id': 'Get file info',
           'DELETE /upload/:id': 'Delete file'
         },
         types: {
-          'GET /generate-types': 'Generate TypeScript interfaces for all models',
-          'GET /generate-types/:model': 'Generate TypeScript interface for specific model'
+          'POST /generate-types': 'Generate TypeScript interfaces for all models',
+          'POST /generate-types/:model': 'Generate TypeScript interface for specific model'
         }
       }
     });
@@ -110,8 +110,8 @@ function createApp(): express.Application {
   // Mount routers
   app.use('/models', createModelsRouter(config));
   app.use('/content', createContentRouter(config));
-  app.use('/upload', createUploadRouter(config));
-  app.use('/generate-types', createTypesRouter(config));
+  app.use('/', createUploadRouter(config)); // Mount upload routes at root to handle /upload and /upload-url
+  app.use('/', createTypesRouter(config)); // Mount types routes at root to handle /generate-types
 
   // Error handling middleware
   app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

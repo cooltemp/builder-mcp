@@ -11,8 +11,8 @@ export function createTypesRouter(config: BuilderConfig): Router {
   const adminService = new BuilderAdminService(config);
   const typeGenerator = new TypeGenerator();
 
-  // GET /generate-types - Generate TypeScript interfaces for all models (separate files)
-  router.get('/', async (req: Request, res: Response): Promise<void> => {
+  // POST / - Generate TypeScript interfaces for all models (separate files)
+  router.post('/', async (req: Request, res: Response): Promise<void> => {
     try {
       Logger.info('Generating TypeScript interfaces for all models');
 
@@ -72,13 +72,13 @@ export function createTypesRouter(config: BuilderConfig): Router {
     }
   });
 
-  // GET /generate-types/:model - Generate TypeScript interface for specific model
-  router.get('/:model', async (req: Request, res: Response): Promise<void> => {
+  // POST /:model - Generate TypeScript interface for specific model
+  router.post('/:model', async (req: Request, res: Response): Promise<void> => {
     try {
       const { model } = req.params;
       Logger.info(`Generating TypeScript interface for model: ${model}`);
 
-      const modelResult = await adminService.getModel(model);
+      const modelResult = await adminService.getModelByName(model);
 
       if (!modelResult.success) {
         res.status(modelResult.status).json({

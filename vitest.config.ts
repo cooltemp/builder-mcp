@@ -8,6 +8,10 @@ export default defineConfig({
     setupFiles: ['./tests/setup.ts'],
     testTimeout: 30000, // 30 seconds for API calls
     hookTimeout: 10000, // 10 seconds for setup/teardown
+    sequence: {
+      concurrent: false, // Run tests sequentially within each file
+      shuffle: false, // Don't shuffle test order
+    },
   },
   cacheDir: './tests/.vitest',
   resolve: {

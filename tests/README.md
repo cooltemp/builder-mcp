@@ -37,8 +37,23 @@ npm run test:upload
 # TypeScript generation tests
 npm run test:types
 
+# MCP Tools tests (NEW)
+npm run test:mcp-tools
+
+# Express API tests (NEW)
+npm run test:express-api
+
+# MCP Server tests (NEW)
+npm run test:mcp-server
+
+# Integration tests (NEW)
+npm run test:integration
+
 # All tests
 npm run test:all
+
+# Comprehensive new test suite
+npm run test:comprehensive
 ```
 
 ### Watch Mode
@@ -192,6 +207,131 @@ Comprehensive testing for TypeScript interface generation:
    - Validates syntactically correct TypeScript
    - Tests consistent naming conventions
    - Verifies proper interface structure
+
+### 🔧 MCP Tools Testing (`mcp-tools.test.ts`) - NEW
+
+Direct testing of MCP tool functions and validation:
+
+1. **Tool Registration and Schema**
+   - Validates all 18 MCP tools are registered correctly
+   - Tests input schema validation for each tool
+   - Verifies proper tool descriptions and handlers
+
+2. **Model Management Tools**
+   - Tests `list_models_node` MCP response format
+   - Tests `get_model_ids_node` data structure
+   - Tests `create_model_node` input validation and creation
+   - Tests `get_model_node` with valid and invalid IDs
+
+3. **Content Management Tools**
+   - Tests `get_content_node` model parameter validation
+   - Tests `create_content_node` required field validation
+   - Tests content tool error handling
+
+4. **Type Generation Tools**
+   - Tests `generate_types_node` execution
+   - Tests `generate_types_for_model_node` validation
+   - Tests type generation workflows
+
+5. **Error Handling**
+   - Tests network error handling across all tools
+   - Validates consistent error response format
+   - Tests tool execution with invalid configurations
+
+### 🌐 Express API Testing (`express-api.test.ts`) - NEW
+
+HTTP endpoint and middleware testing using Supertest:
+
+1. **Models API Routes**
+   - Tests `GET /models` endpoint response format
+   - Tests `GET /models/ids` minimal data structure
+   - Tests `GET /models/schema` GraphQL introspection
+   - Tests `POST /models` with validation and creation
+   - Tests `GET /models/:id` with valid and invalid IDs
+   - Tests `PUT /models/:id` update functionality
+   - Tests `DELETE /models/:id` deletion workflow
+
+2. **Content API Routes**
+   - Tests `GET /content/:model` with query parameters
+   - Tests `GET /content/:model/:id` specific content retrieval
+   - Tests `POST /content/:model` content creation validation
+
+3. **Upload API Routes**
+   - Tests `POST /upload` file upload validation
+   - Tests `POST /upload-url` URL parameter validation
+
+4. **Types API Routes**
+   - Tests `POST /generate-types` type generation
+   - Tests `POST /generate-types/:model` model-specific generation
+
+5. **Error Handling Middleware**
+   - Tests 404 route handling
+   - Tests validation error consistency
+   - Tests error response format standardization
+
+### 🔌 MCP Server Testing (`mcp-server.test.ts`) - NEW
+
+MCP protocol compliance and server integration testing:
+
+1. **MCP Protocol Compliance**
+   - Tests `ListToolsRequest` response format
+   - Tests `ListResourcesRequest` response format
+   - Tests `CallToolRequest` with valid and invalid tools
+   - Tests `ReadResourceRequest` resource access
+
+2. **Tool Execution Flow**
+   - Tests model creation workflow through MCP
+   - Tests model retrieval workflow through MCP
+   - Tests type generation workflow through MCP
+
+3. **Error Handling in MCP Context**
+   - Tests tool execution error handling
+   - Tests validation error format in MCP context
+   - Tests network error handling in MCP format
+
+4. **Resource Access Flow**
+   - Tests model information through MCP resources
+   - Tests server info through MCP resources
+
+5. **MCP Response Format Validation**
+   - Tests consistent MCP response format across all tools
+   - Validates JSON content structure
+   - Tests MCP protocol compliance
+
+### 🔄 Integration Testing (`integration.test.ts`) - NEW
+
+End-to-end workflow and cross-layer integration testing:
+
+1. **End-to-End Model Lifecycle**
+   - Complete workflow: create → verify → update → verify → delete
+   - Tests Express API and MCP tool integration
+   - Tests TypeScript type generation integration
+   - Validates data consistency across all layers
+
+2. **Cross-Layer Data Consistency**
+   - Compares Express API and MCP tool responses
+   - Tests MCP resource and tool data consistency
+   - Validates identical data across different access methods
+
+3. **Type Generation Integration**
+   - Tests type generation via Express API and MCP tools
+   - Tests type validation against actual content
+   - Validates generated TypeScript interface consistency
+
+4. **Error Handling Integration**
+   - Tests error consistency across Express API and MCP tools
+   - Validates error response format standardization
+   - Tests error propagation through all layers
+
+5. **Performance and Reliability**
+   - Tests concurrent request handling
+   - Tests performance under load
+   - Validates system reliability
+
+6. **Real-World Workflow Simulation**
+   - Simulates typical AI agent workflow
+   - Tests complete discovery → generation → validation cycle
+   - Validates practical usage scenarios
 
 ### 🧹 Cleanup
 
