@@ -153,6 +153,33 @@ export class BuilderAdminService {
     };
   }
 
+  async getModelByName(name: string): Promise<ApiResponse<BuilderModel>> {
+    // First get all models to find the one with matching name
+    const modelsResult = await this.getModels();
+
+    if (!modelsResult.success) {
+      return {
+        success: false,
+        error: modelsResult.error || 'Failed to fetch models',
+        status: modelsResult.status
+      };
+    }
+
+    const models = modelsResult.data?.models || [];
+    const model = models.find(m => m.name === name);
+
+    if (!model) {
+      return {
+        success: false,
+        error: `Model with name '${name}' not found`,
+        status: 404
+      };
+    }
+
+    // Now get the full model details by ID
+    return this.getModel(model.id);
+  }
+
   async createModel(model: Partial<BuilderModel>): Promise<ApiResponse<BuilderModel>> {
     const mutation = `
       mutation CreateModel($input: ModelInput!) {

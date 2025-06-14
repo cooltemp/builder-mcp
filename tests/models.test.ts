@@ -88,19 +88,19 @@ describe('Builder.io Models API Integration Tests', () => {
   describe('3. Get Specific Model', () => {
     it('should successfully fetch a specific model by ID', async () => {
       if (!hasApiKeys) return;
-      
+
       // First get a model ID to test with
       const modelsResult = await adminService.getModelIds();
       expect(modelsResult.success).toBe(true);
-      
+
       if (!modelsResult.data?.length) {
         Logger.warn('⚠️  No models found to test specific model fetch');
         return;
       }
-      
+
       const testId = modelsResult.data[0].id;
       const result = await adminService.getModel(testId);
-      
+
       expect(result.success).toBe(true);
       expect(result.data).toBeDefined();
       expect(result.data?.id).toBe(testId);
@@ -108,10 +108,10 @@ describe('Builder.io Models API Integration Tests', () => {
       expect(result.data).toHaveProperty('kind');
       expect(result.data).toHaveProperty('fields');
       expect(result.status).toBe(200);
-      
+
       Logger.info(`✅ Successfully fetched model: ${result.data?.name}`);
     });
-    
+
     it('should handle non-existent model ID gracefully', async () => {
       if (!hasApiKeys) return;
 
@@ -127,6 +127,153 @@ describe('Builder.io Models API Integration Tests', () => {
       }
 
       Logger.info('✅ Properly handled non-existent model ID');
+    });
+  });
+
+  describe('3.5. Get Model By Name', () => {
+    it('should successfully fetch a specific model by name', async () => {
+      if (!hasApiKeys) return;
+
+      // First get a model to test with
+      const modelsResult = await adminService.getModelIds();
+      expect(modelsResult.success).toBe(true);
+
+      if (!modelsResult.data?.length) {
+        Logger.warn('⚠️  No models found to test model fetch by name');
+        return;
+      }
+
+      const testModel = modelsResult.data[0];
+      const testName = testModel.name;
+      const testId = testModel.id;
+
+      const result = await adminService.getModelByName(testName);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toBeDefined();
+      expect(result.data?.id).toBe(testId);
+      expect(result.data?.name).toBe(testName);
+      expect(result.data).toHaveProperty('kind');
+      expect(result.data).toHaveProperty('fields');
+      expect(result.status).toBe(200);
+
+      Logger.info(`✅ Successfully fetched model by name: ${testName}`);
+    });
+
+    it('should return the same data when fetching by ID vs by name', async () => {
+      if (!hasApiKeys) return;
+
+      // Get a model to test with
+      const modelsResult = await adminService.getModelIds();
+      expect(modelsResult.success).toBe(true);
+
+      if (!modelsResult.data?.length) {
+        Logger.warn('⚠️  No models found to test ID vs name consistency');
+        return;
+      }
+
+      const testModel = modelsResult.data[0];
+      const testName = testModel.name;
+      const testId = testModel.id;
+
+      // Fetch by ID
+      const resultById = await adminService.getModel(testId);
+      expect(resultById.success).toBe(true);
+
+      // Fetch by name
+      const resultByName = await adminService.getModelByName(testName);
+      expect(resultByName.success).toBe(true);
+
+      // Compare the results
+      expect(resultById.data?.id).toBe(resultByName.data?.id);
+      expect(resultById.data?.name).toBe(resultByName.data?.name);
+      expect(resultById.data?.kind).toBe(resultByName.data?.kind);
+      expect(resultById.data?.fields?.length).toBe(resultByName.data?.fields?.length);
+
+      Logger.info(`✅ Verified consistency between getModel(ID) and getModelByName(name)`);
+    });
+
+    it('should handle non-existent model name gracefully', async () => {
+      if (!hasApiKeys) return;
+
+      const fakeName = 'non-existent-model-name-12345';
+      const result = await adminService.getModelByName(fakeName);
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBeDefined();
+      expect(result.error).toContain(`Model with name '${fakeName}' not found`);
+      expect(result.status).toBe(404);
+
+      Logger.info('✅ Properly handled non-existent model name');
+    });
+
+    it('should handle empty model name gracefully', async () => {
+      if (!hasApiKeys) return;
+
+      const emptyName = '';
+      const result = await adminService.getModelByName(emptyName);
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBeDefined();
+      expect(result.error).toContain(`Model with name '' not found`);
+      expect(result.status).toBe(404);
+
+      Logger.info('✅ Properly handled empty model name');
+    });
+
+    it('should handle case-sensitive model names correctly', async () => {
+      if (!hasApiKeys) return;
+
+      // Get a model to test with
+      const modelsResult = await adminService.getModelIds();
+      expect(modelsResult.success).toBe(true);
+
+      if (!modelsResult.data?.length) {
+        Logger.warn('⚠️  No models found to test case sensitivity');
+        return;
+      }
+
+      const testModel = modelsResult.data[0];
+      const testName = testModel.name;
+
+      // Test with different case
+      const upperCaseName = testName.toUpperCase();
+      const lowerCaseName = testName.toLowerCase();
+
+      // Only test if the case is actually different
+      if (upperCaseName !== testName) {
+        const resultUpper = await adminService.getModelByName(upperCaseName);
+        expect(resultUpper.success).toBe(false);
+        expect(resultUpper.error).toContain(`Model with name '${upperCaseName}' not found`);
+        Logger.info('✅ Verified case sensitivity for uppercase name');
+      }
+
+      if (lowerCaseName !== testName) {
+        const resultLower = await adminService.getModelByName(lowerCaseName);
+        expect(resultLower.success).toBe(false);
+        expect(resultLower.error).toContain(`Model with name '${lowerCaseName}' not found`);
+        Logger.info('✅ Verified case sensitivity for lowercase name');
+      }
+    });
+
+    it('should handle API errors when fetching models list', async () => {
+      if (!hasApiKeys) return;
+
+      // Create a service with invalid credentials to test error handling
+      const invalidConfig: BuilderConfig = {
+        apiKey: 'invalid-api-key',
+        privateKey: 'invalid-private-key'
+      };
+
+      const invalidService = new BuilderAdminService(invalidConfig);
+      const result = await invalidService.getModelByName('any-name');
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBeDefined();
+      // Builder.io API might return 200 even with invalid credentials, so just check for error
+      expect(result.status).toBeGreaterThanOrEqual(200);
+
+      Logger.info('✅ Properly handled API errors in getModelByName');
     });
   });
 

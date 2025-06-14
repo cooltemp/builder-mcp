@@ -3,8 +3,13 @@
     {
       "name": "builder-mcp",
       "command": "node",
-      "args": ["/Users/justinbeattie/Development/builder-mcp/dist/app.js"],
-      "cwd": "/Users/justinbeattie/Development/builder-mcp"
+      "args": ["/Users/justinbeattie/Development/builder-mcp/dist/mcp/server.js"],
+      "cwd": "/Users/justinbeattie/Development/builder-mcp",
+      "env": {
+        "MCP_MODE": "true",
+        "BUILDER_API_KEY": "51506ff347d64e8396d0bb00d1642bff",
+        "BUILDER_PRIVATE_KEY": "bpk-2de362b30db74da9a7cf68880f2f6517"
+      }
     }
   ]
 }

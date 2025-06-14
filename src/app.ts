@@ -159,7 +159,15 @@ process.on('SIGINT', () => {
 
 // Start the server if this file is run directly
 if (require.main === module) {
-  startServer();
+  // Check if we should run in MCP mode
+  const isMcpMode = process.argv.includes('--mcp') || process.env.MCP_MODE === 'true';
+
+  if (isMcpMode) {
+    Logger.info('Starting in MCP mode - use src/mcp/server.ts instead');
+    process.exit(1);
+  } else {
+    startServer();
+  }
 }
 
 export { createApp, startServer };

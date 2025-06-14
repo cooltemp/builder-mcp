@@ -5,8 +5,10 @@
   "main": "dist/app.js",
   "scripts": {
     "dev": "tsx watch src/app.ts",
+    "dev:mcp": "tsx watch src/mcp/server.ts",
     "build": "tsc && tsc-alias",
     "start": "node dist/app.js",
+    "start:mcp": "node dist/mcp/server.js",
     "type-check": "tsc --noEmit",
     "generate-types": "tsx src/scripts/generateTypes.ts",
     "debug-models": "tsx src/scripts/debugModels.ts",
@@ -20,25 +22,33 @@
     "test:types": "vitest run tests/types.test.ts",
     "test:all": "vitest run tests/"
   },
-  "keywords": ["builder.io", "mcp", "cms", "qwik", "typescript"],
+  "keywords": [
+    "builder.io",
+    "mcp",
+    "cms",
+    "qwik",
+    "typescript"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
+    "@modelcontextprotocol/sdk": "^1.0.4",
     "axios": "^1.6.2",
-    "dotenv": "^16.3.1",
     "cors": "^2.8.5",
-    "multer": "^1.4.5-lts.1",
-    "form-data": "^4.0.0"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "form-data": "^4.0.0",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.10.4",
     "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/multer": "^1.4.11",
-    "typescript": "^5.3.3",
+    "@types/node": "^20.10.4",
+    "@vitest/ui": "^1.0.4",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.6.2",
-    "vitest": "^1.0.4",
-    "@vitest/ui": "^1.0.4"
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4"
   }
 }

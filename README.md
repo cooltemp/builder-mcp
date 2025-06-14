@@ -1,13 +1,15 @@
 # Builder.io MCP Server
 
-A simple, clean, and functional MCP (Model Control Point) Node.js + TypeScript app for working with Builder.io from your local development environment. This MCP integrates with Augment Code and allows you to manage CMS models, write and read content, upload media, and generate strict TypeScript interfaces for your Qwik frontend.
+A simple, clean, and functional Node.js + TypeScript app for working with Builder.io from your local development environment. This server provides both REST API and Model Context Protocol (MCP) interfaces for managing Builder.io content, models, uploads, and TypeScript generation. It integrates with Augment Code and allows you to manage CMS models, write and read content, upload media, and generate strict TypeScript interfaces for your Qwik frontend.
 
 ## Features
 
+- **Dual Interface**: Both REST API and MCP (Model Context Protocol) support
 - **Model Management**: Create, read, update, and delete Builder.io models
 - **Content Management**: CRUD operations for content entries
 - **Media Upload**: Upload files and manage media assets
 - **TypeScript Generation**: Auto-generate strict interfaces for Qwik frontend
+- **Augment Integration**: Native MCP support for AI-powered development
 - **Clean Architecture**: Well-structured with routes, services, types, and utils
 - **Comprehensive Logging**: Request/response logging for debugging
 
@@ -39,17 +41,19 @@ NODE_ENV=development
 ### 3. Build and Run
 
 ```bash
-# Development mode with hot reload
-npm run dev
-
 # Build for production
 npm run build
 
-# Run production build
-npm start
+# REST API mode (Express server)
+npm run dev          # Development with hot reload
+npm start            # Production
+
+# MCP mode (for Augment integration)
+npm run dev:mcp      # Development with hot reload
+npm run start:mcp    # Production
 ```
 
-### 4. Configure Augment
+### 4. Configure Augment (MCP Mode)
 
 The `settings.json` file is already configured for Augment Code integration:
 
@@ -59,13 +63,31 @@ The `settings.json` file is already configured for Augment Code integration:
     {
       "name": "builder-mcp",
       "command": "node",
-      "args": ["dist/app.js"]
+      "args": ["/Users/justinbeattie/Development/builder-mcp/dist/mcp/server.js"],
+      "cwd": "/Users/justinbeattie/Development/builder-mcp"
     }
   ]
 }
 ```
 
-## API Endpoints
+This enables AI agents to directly interact with Builder.io through MCP tools and resources.
+
+## MCP Tools & Resources
+
+### MCP Tools (Actions)
+- **Models**: `list_models`, `get_model_ids`, `get_model`, `create_model`, `update_model`, `delete_model`
+- **Content**: `get_content`, `get_content_by_id`, `create_content`, `update_content`, `publish_content`, `unpublish_content`
+- **Upload**: `upload_from_url`, `get_file_info`, `delete_file`
+- **Types**: `generate_types`, `generate_types_for_model`
+
+### MCP Resources (Data Access)
+- `builder://models` - List of all Builder.io models
+- `builder://models/ids` - Model IDs and names only
+- `builder://schema` - GraphQL schema introspection
+- `builder://health` - Health status of the MCP server
+- `builder://info` - Information about available tools and capabilities
+
+## REST API Endpoints
 
 ### Models
 - `GET /models` - List all models
@@ -165,6 +187,10 @@ Generated files are saved to `src/types/generated/` and match the actual Content
 
 ```
 src/
+├── mcp/             # MCP server implementation
+│   ├── server.ts    # Main MCP server
+│   ├── tools.ts     # MCP tools (actions)
+│   └── resources.ts # MCP resources (data access)
 ├── routes/          # Express route handlers
 │   ├── models.ts    # Model CRUD operations
 │   ├── content.ts   # Content CRUD operations
@@ -187,9 +213,11 @@ src/
 ## Development
 
 ### Scripts
-- `npm run dev` - Development mode with hot reload
+- `npm run dev` - REST API development mode with hot reload
+- `npm run dev:mcp` - MCP development mode with hot reload
 - `npm run build` - Build TypeScript to JavaScript
-- `npm start` - Run production build
+- `npm start` - Run REST API production build
+- `npm run start:mcp` - Run MCP production build
 - `npm run type-check` - TypeScript type checking
 
 ### Logging

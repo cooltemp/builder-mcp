@@ -1,10 +1,20 @@
 // Simple logging utility
 
 export class Logger {
+  // Check if we're running as an MCP server (stdio transport)
+  private static get isMcpMode(): boolean {
+    return process.env.MCP_MODE === 'true' || process.argv.includes('--mcp');
+  }
+
   private static log(level: string, message: string, data?: any) {
+    // Don't log to stdout/stderr in MCP mode as it interferes with protocol communication
+    if (this.isMcpMode) {
+      return;
+    }
+
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] ${level}: ${message}`;
-    
+
     if (data) {
       console.log(logMessage, data);
     } else {
