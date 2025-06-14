@@ -1,10 +1,10 @@
-// Auto-generated TypeScript interfaces for hvac-use-case content
-// Generated on: 2025-06-14T23:27:52.198Z
+// Auto-generated TypeScript interfaces for mcp-server-test-1749943625321 content
+// Generated on: 2025-06-14T23:27:52.199Z
 
 import type { BuilderReference } from '@/types';
 
 // Content entry structure (full response from Content API)
-export interface IHVACUseCaseContent {
+export interface IMcpServerTest1749943625321Content {
   id: string;
   name: string;
   published: 'published' | 'draft' | 'archived';
@@ -12,14 +12,10 @@ export interface IHVACUseCaseContent {
   lastUpdated?: number;
   modelId: string;
   rev?: string;
-  data: IHVACUseCaseData;
+  data: IMcpServerTest1749943625321Data;
 }
 
 // Data structure (nested under 'data' property in content)
-export interface IHVACUseCaseData {
-  spaceArea?: string;
-  spaceCeilingHeight?: string;
-  spaceVolume?: string;
-  powerCapacity?: string;
-  order?: number;
+export interface IMcpServerTest1749943625321Data {
+  title: string;
 }

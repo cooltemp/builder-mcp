@@ -1,5 +1,5 @@
 // Auto-generated TypeScript interfaces for mcp-server-test-1749943322437 content
-// Generated on: 2025-06-14T23:22:47.296Z
+// Generated on: 2025-06-14T23:27:52.201Z
 
 import type { BuilderReference } from '@/types';
 

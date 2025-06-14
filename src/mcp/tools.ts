@@ -225,6 +225,9 @@ export function createBuilderTools(config: BuilderConfig): McpTool[] {
       },
     },
 
+    // COMMENTED OUT: Potentially dangerous model modification tools
+    // Uncomment these if you need to update or delete models via MCP
+    /*
     {
       name: 'update_model',
       description: 'Update an existing Builder.io model',
@@ -301,6 +304,7 @@ export function createBuilderTools(config: BuilderConfig): McpTool[] {
         };
       },
     },
+    */
 
     // Content tools
     {
